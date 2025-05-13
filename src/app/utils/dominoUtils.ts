@@ -29,6 +29,6 @@ export const removeDuplicates = (dominoes: number[][]) => {
   });
 };
 
-export const removeByTotal = (dominoes: number[][], total: number) => {
+export function removeByTotal(dominoes: number[][], total: number): number[][] {
   return dominoes.filter(([a, b]) => a + b !== total);
-};
+}

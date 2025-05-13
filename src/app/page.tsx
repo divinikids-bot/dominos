@@ -51,7 +51,16 @@ export default function Home() {
           setInputTotal={setInputTotal}
           onRemoveTotal={() => {
             const total = parseInt(inputTotal);
-            if (!isNaN(total)) setDominoes(removeByTotal(dominoes, total));
+            console.log('Input Total:', inputTotal); // Debugging input value
+            console.log('Parsed Total:', total); // Debugging parsed value
+            if (!isNaN(total) && total > 0) {
+              console.log('Filtering dominoes with total:', total); // Debugging filtering action
+              const newDominoes = removeByTotal(dominoes, total);
+              console.log('New Dominoes:', newDominoes); // Debugging updated dominoes
+              setDominoes(newDominoes);
+            } else {
+              alert('Please enter a valid number.');
+            }
           }}
         />
       </main>
