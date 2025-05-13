@@ -1,39 +1,60 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { initialDominos } from "@/app/types/dominos";
-import { countDoubles, flipDominos, removeDuplicates, sortDominos, removeByTotal } from "@/app/utils/dominoUtils"
-import DominoCard from "./components/dominosCard";
+import { useState } from 'react';
+import DominoCard from './components/dominosCard';
+import DominoControls from './components/dominosControl';
+import {
+  countDoubles,
+  sortDominoes,
+  flipDominoes,
+  removeDuplicates,
+  removeByTotal,
+} from './utils/dominoUtils';
+
+const defaultDominoes: number[][] = [
+  [6, 1], [4, 3], [5, 1], [3, 4], [1, 1], [3, 4], [1, 2],
+];
 
 export default function Home() {
-  const [dominos, setDominos] = useState<[number, number][]>(initialDominos);
-  const [input, setInput] = useState("");
+  const [dominoes, setDominoes] = useState<number[][]>(defaultDominoes);
+  const [inputTotal, setInputTotal] = useState<string>('');
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">Dominoes</h1>
+    <div className="min-h-screen flex justify-center items-center bg-gray-100">
+      <main className="p-8 max-w-3xl w-full text-black rounded shadow bg-white">
+        <h1 className="text-4xl font-bold mb-2">Dominoes</h1>
+        <p className="mb-6">Create a single page application to show domino cards like the example.</p>
 
-      <p><strong>Source:</strong> {JSON.stringify(dominos)}</p>
-      <p><strong>Double Numbers:</strong> {countDoubles(dominos)}</p>
+        <div className="bg-gray-100 p-4 rounded mb-4">
+          <h2 className="text-xl font-bold mb-2">Source</h2>
+          <pre>{JSON.stringify(dominoes)}</pre>
+        </div>
 
-      <div className="flex gap-2 my-4 flex-wrap">
-        {dominos.map(([a, b], i) => (
-          <DominoCard key={i} top={a} bottom={b} />
-        ))}
-      </div>
+        <div className="bg-gray-100 p-4 rounded mb-4">
+          <h2 className="text-xl font-bold mb-2">Double Numbers</h2>
+          <p>{countDoubles(dominoes)}</p>
+        </div>
 
-      <div className="flex gap-2 mb-4 flex-wrap">
-        <button onClick={() => setDominos(sortDominos(dominos, "asc"))}>Sort (ASC)</button>
-        <button onClick={() => setDominos(sortDominos(dominos, "desc"))}>Sort (DESC)</button>
-        <button onClick={() => setDominos(flipDominos(dominos))}>Flip</button>
-        <button onClick={() => setDominos(removeDuplicates(dominos))}>Remove Dup</button>
-        <button onClick={() => setDominos(initialDominos)}>Reset</button>
-      </div>
+        <div className="flex flex-wrap gap-2 mb-6">
+          {dominoes.map(([a, b], index) => (
+            <DominoCard key={index} a={a} b={b} />
+          ))}
+        </div>
 
-      <div className="flex gap-2 items-center">
-        <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Input Total Number" />
-        <button onClick={() => setDominos(removeByTotal(dominos, parseInt(input)))}>Remove</button>
-      </div>
+        <DominoControls
+          onSortAsc={() => setDominoes(sortDominoes(dominoes, 'asc'))}
+          onSortDesc={() => setDominoes(sortDominoes(dominoes, 'desc'))}
+          onFlip={() => setDominoes(flipDominoes(dominoes))}
+          onRemoveDup={() => setDominoes(removeDuplicates(dominoes))}
+          onReset={() => setDominoes(defaultDominoes)}
+          inputTotal={inputTotal}
+          setInputTotal={setInputTotal}
+          onRemoveTotal={() => {
+            const total = parseInt(inputTotal);
+            if (!isNaN(total)) setDominoes(removeByTotal(dominoes, total));
+          }}
+        />
+      </main>
     </div>
   );
 }

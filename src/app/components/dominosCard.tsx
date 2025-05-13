@@ -1,9 +1,16 @@
-export default function DominoCard({ top, bottom }: { top: number, bottom: number }) {
+import React from 'react';
+
+type Props = {
+  a: number;
+  b: number;
+};
+
+export default function DominoCard({ a, b }: Props) {
   return (
-    <div className="border p-2 text-center w-10">
-      <div>{top}</div>
-      <div>-</div>
-      <div>{bottom}</div>
+    <div className="w-10 border text-center p-1 bg-white shadow rounded">
+      <div>{a}</div>
+      <hr className="border-t my-1" />
+      <div>{b}</div>
     </div>
   );
 }
