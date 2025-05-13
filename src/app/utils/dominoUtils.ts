@@ -1,5 +1,3 @@
-// app/utils/dominoUtils.ts
-
 export const countDoubles = (dominoes: number[][]): number => {
   return dominoes.filter(([a, b]) => a === b).length;
 };
